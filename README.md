@@ -38,3 +38,7 @@ Keep secrets out of source control, use least-privilege access, and validate cha
 ## License
 
 MIT. See [LICENSE](LICENSE).
+
+## Supporting template
+
+Added `templates/gradle/signing.gradle` as a secure signing configuration reference. It uses CI environment variables or Gradle properties and intentionally does not include keystore files or hard-coded credentials. Enable release signing only after configuring protected CI secrets.
