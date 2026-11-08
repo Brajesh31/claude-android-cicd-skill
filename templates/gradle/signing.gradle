@@ -1,0 +1,40 @@
+// Reusable Android Gradle signing configuration.
+// Apply from the app module's build.gradle after defining android { }.
+// Keep keystore files and passwords out of source control.
+//
+// Recommended CI environment variables:
+//   ANDROID_KEYSTORE_PATH
+//   ANDROID_KEYSTORE_PASSWORD
+//   ANDROID_KEY_ALIAS
+//   ANDROID_KEY_PASSWORD
+//
+// Example usage in app/build.gradle:
+//
+// apply from: rootProject.file("templates/gradle/signing.gradle")
+//
+// android {
+//     signingConfigs {
+//         release {
+//             if (project.hasProperty("releaseStoreFile")) {
+//                 storeFile file(project.property("releaseStoreFile"))
+//                 storePassword project.findProperty("releaseStorePassword")
+//                 keyAlias project.findProperty("releaseKeyAlias")
+//                 keyPassword project.findProperty("releaseKeyPassword")
+//             } else if (System.getenv("ANDROID_KEYSTORE_PATH")) {
+//                 storeFile file(System.getenv("ANDROID_KEYSTORE_PATH"))
+//                 storePassword System.getenv("ANDROID_KEYSTORE_PASSWORD")
+//                 keyAlias System.getenv("ANDROID_KEY_ALIAS")
+//                 keyPassword System.getenv("ANDROID_KEY_PASSWORD")
+//             }
+//         }
+//     }
+//     buildTypes {
+//         release {
+//             // Enable only after CI signing credentials are configured.
+//             // signingConfig signingConfigs.release
+//         }
+//     }
+// }
+//
+// Do not commit keystores, passwords, or signing properties. Use CI secrets
+// or an encrypted secret manager, and restrict access to release credentials.
