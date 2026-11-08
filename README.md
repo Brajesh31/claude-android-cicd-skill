@@ -96,3 +96,30 @@ Use protected CI secrets or secure Gradle properties for signing credentials. Ne
 ## Important Note
 
 Google Play publishing and signing behavior depend on project configuration and account permissions. Test the pipeline with a non-production release before enabling automated production deployment.
+
+## Release Engineering Resources
+
+The following working documents complement the Gradle signing template already included in this repository.
+
+| Resource | Purpose |
+|---|---|
+| [Release pipeline design template](resources/release-pipeline-design-template.md) | Map build, test, signing, verification, publishing, and monitoring stages. |
+| [Signing and secret handling checklist](resources/signing-and-secret-handling-checklist.md) | Review keystore custody, CI secret exposure, access restrictions, and incident response. |
+| [Release validation and rollback runbook](resources/release-validation-and-rollback-runbook.md) | Validate artifacts, promote releases in stages, define stop conditions, and coordinate recovery. |
+| [Gradle signing template](templates/gradle/signing.gradle) | Starting point for wiring release signing through CI-provided credentials. |
+
+## CI/CD Design Considerations
+
+Keep build, test, signing, and publishing as clearly separated stages. Run lint and automated tests before exposing signing credentials. Restrict release secrets to trusted jobs on protected branches or approved tags. A pull request from an untrusted fork should never be able to read production signing material.
+
+Treat the signed artifact as a release record. Preserve its checksum, source commit, build identifier, application ID, version name, version code, and signing certificate details. This makes it possible to identify exactly what was tested and published.
+
+## Release Gating and Recovery
+
+A successful build is not the same as a safe release. Verify the signed artifact, install it on representative devices, and exercise critical application journeys before publishing. Use staged tracks or controlled rollout where available. Define explicit stop conditions for crashes, ANRs, authentication failures, data loss, and other critical regressions.
+
+Mobile releases cannot always be rolled back by simply reinstalling an earlier binary. Understand the distribution platform's supported recovery options, preserve the previous release details, and prepare a forward-fix process. Use server-side controls or feature flags only when they are designed and tested for that purpose.
+
+## Release Handoff
+
+Before promoting a release, the handoff should identify the commit, artifact, checksums, version details, test results, signing identity, release channel, approvals, known risks, and recovery owner. The process is incomplete until someone is accountable for monitoring the rollout after publication.
